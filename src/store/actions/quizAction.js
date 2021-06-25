@@ -85,14 +85,14 @@ export function quizAnswerClick(answerId) {
   };
 }
 
+function isQuizFinished(state) {
+  return state.activeQuestion + 1 === state.quiz.length;
+}
+
 export function retryQuiz() {
   return {
     type: QUIZ_RETRY,
   };
-}
-
-function isQuizFinished(state) {
-  return state.activeQuestion + 1 === state.quiz.length;
 }
 
 export function fetchQuizesStart() {
