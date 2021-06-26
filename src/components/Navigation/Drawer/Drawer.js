@@ -4,18 +4,12 @@ import Backdrop from "../../UI/Backdrop/Backdrop";
 
 import classes from "./Drawer.module.css";
 
-const links = [
-  {to: "/", label: "Quiz List", exact: true},
-  {to: "/auth", label: "Authorization", exact: false},
-  {to: "/quiz-creator", label: "Add New Test", exact: false},
-];
-
 class Drawer extends Component {
   clickHandler = () => {
     this.props.onClose();
   };
 
-  renderLinks() {
+  renderLinks(links) {
     return links.map((link, idx) => {
       return (
         <li key={idx}>
@@ -38,10 +32,35 @@ class Drawer extends Component {
     if (!this.props.isOpen) {
       classesArr.push(classes.close);
     }
+
+    const links = [{to: "/", label: "Quiz List", exact: true}];
+
+    console.log("auth", this.props.isAuthenticated);
+
+    if (this.props.isAuthenticated) {
+      links.push({
+        to: "/quiz-creator",
+        label: "Add New Test",
+        exact: false,
+      });
+
+      links.push({
+        to: "/logout",
+        label: "Logout",
+        exact: false,
+      });
+    } else {
+      links.push({
+        to: "/auth",
+        label: "Authorization",
+        exact: false,
+      });
+    }
+
     return (
       <>
         <nav className={classesArr.join(" ")}>
-          <ul>{this.renderLinks()}</ul>
+          <ul>{this.renderLinks(links)}</ul>
         </nav>
         {this.props.isOpen ? <Backdrop onClick={this.props.onClose} /> : null}
       </>

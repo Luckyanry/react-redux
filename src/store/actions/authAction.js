@@ -41,6 +41,27 @@ export function autoLogout(sessionTime) {
   };
 }
 
+export function autoLogin() {
+  return (dispatch) => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      dispatch(authLogout());
+    } else {
+      const expirationDate = new Date(localStorage.getItem("expirationDate"));
+
+      if (expirationDate <= new Date()) {
+        dispatch(authLogout());
+      } else {
+        dispatch(authSuccess(token));
+        dispatch(
+          autoLogout((expirationDate.getTime() - new Date().getTime()) / 1000)
+        );
+      }
+    }
+  };
+}
+
 export function authLogout() {
   localStorage.removeItem("token");
   localStorage.removeItem("userId");
